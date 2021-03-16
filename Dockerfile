@@ -14,4 +14,16 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 WORKDIR ${HOME}
+
+USER root
+
+RUN mkdir /home/$NB_USER/jupyter_notebook
+COPY *.ipynb /home/$NB_USER/jupyter_notebook/
+RUN chown --recursive $NB_UID:users /home/$NB_USER/jupyter_notebook
+
+USER $NB_UID
+
+ENV JUPYTER_ENABLE_LAB=yes
+
 USER ${USER}
+
