@@ -120,5 +120,5 @@ RUN mkdir software/gate \
  && make -j16 install \
  && cd .. \
  && rm -rf src bin \
- && echo "export PATH=/software/gate/install/bin:$PATH" >> /root/.bashrc
+ && echo "export PATH=/software/gate/install/bin:$PATH" >> /root/.profile
 
