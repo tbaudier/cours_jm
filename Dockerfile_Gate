@@ -104,11 +104,8 @@ RUN cd software/geant4 \
 
 #Compile Gate
 RUN mkdir software/gate \
- && echo "cd /software/geant4/install/bin/" >> /root/.profile \
- && echo "source ./geant4.sh" >> /root/.profile \
- && echo "cd /software/root-cern/install/bin/" >> /root/.profile \
- && echo "source ./thisroot.sh" >> /root/.profile \
- && echo "cd /" >> /root/.profile \
+ && echo "source /software/geant4/install/bin/geant4.sh" >> /root/.profile \
+ && echo "source /software/root-cern/install/bin/thisroot.sh" >> /root/.profile \
  && source /root/.profile \
  && cd software/gate \
  && mkdir src bin install \
