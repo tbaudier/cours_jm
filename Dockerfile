@@ -1,4 +1,4 @@
-FROM tbaudier/cours_jm:v1.1
+FROM tbaudier/cours_jm:v1.3
 # install the notebook package
 RUN pip install --no-cache --upgrade pip && \
     pip install --no-cache notebook
@@ -20,6 +20,9 @@ USER root
 RUN mkdir /home/$NB_USER/jupyter_notebook
 COPY *.ipynb /home/$NB_USER/jupyter_notebook/
 RUN chown --recursive $NB_UID:users /home/$NB_USER/jupyter_notebook
+RUN chown --recursive $NB_UID:users /software/
+RUN cp /root/.profile /home/$NB_USER/.profile
+RUN chown --recursive $NB_UID:users /home/$NB_USER/.profile
 
 USER $NB_UID
 

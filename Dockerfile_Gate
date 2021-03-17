@@ -7,6 +7,7 @@
 #interactive: docker run -ti --rm -v $PWD:/home tbaudier/cours_jm:v1.0 /bin/bash
 
 FROM python:3.7-slim
+SHELL ["/bin/bash", "-c"]
 RUN apt-get update -qq \
  &&   apt-get install -y gcc \
                                   g++ \
@@ -27,7 +28,7 @@ RUN mkdir software \
 
 #Build root
 RUN mkdir software/root-cern \
- && . /root/.profile \
+ && source /root/.profile \
  && cd software/root-cern \
  && mkdir src bin install \
  && git clone --branch v6-19-02 https://github.com/root-project/root.git src \
@@ -41,7 +42,7 @@ RUN mkdir software/root-cern \
 
 #Build geant4
 RUN mkdir software/geant4 \
- && . /root/.profile \
+ && source /root/.profile \
  && cd software/geant4 \
  && mkdir src bin install data \
  && git clone --branch v10.7.0 https://github.com/Geant4/geant4.git src \
@@ -104,20 +105,20 @@ RUN cd software/geant4 \
 #Compile Gate
 RUN mkdir software/gate \
  && echo "cd /software/geant4/install/bin/" >> /root/.profile \
- && echo ". ./geant4.sh" >> /root/.profile \
+ && echo "source ./geant4.sh" >> /root/.profile \
  && echo "cd /software/root-cern/install/bin/" >> /root/.profile \
- && echo "bash -c \"source ./thisroot.sh\"" >> /root/.profile \
+ && echo "source ./thisroot.sh" >> /root/.profile \
  && echo "cd /" >> /root/.profile \
- && . /root/.profile \
+ && source /root/.profile \
  && cd software/gate \
  && mkdir src bin install \
  && git clone https://github.com/OpenGATE/Gate.git src \
  && cd src \
  && git checkout f02ac64088feef5ff764bb3a57cd605ba9145355 \
  && cd ../bin \
-# && cmake ../src -DCMAKE_INSTALL_PREFIX=/software/gate/install \
-# && make -j16 install \
-# && cd .. \
-# && rm -rf src bin \
-# && echo "export PATH=/software/gate/install/bin:$PATH" >> /root/.bashrc
+ && cmake ../src -DCMAKE_INSTALL_PREFIX=/software/gate/install \
+ && make -j16 install \
+ && cd .. \
+ && rm -rf src bin \
+ && echo "export PATH=/software/gate/install/bin:$PATH" >> /root/.bashrc
 
