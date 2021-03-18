@@ -119,3 +119,7 @@ RUN mkdir software/gate \
  && rm -rf src bin \
  && echo "export PATH=/software/gate/install/bin:$PATH" >> /root/.profile
 
+#Change to bash
+RUN rm /bin/sh \
+ && ln -s /bin/bash /bin/sh
+ 
