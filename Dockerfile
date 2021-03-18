@@ -19,10 +19,10 @@ WORKDIR ${HOME}
 USER root
 
 RUN mkdir /home/$NB_USER/jupyter_notebook
-COPY notebook simuGate /home/$NB_USER/
-RUN chown --recursive $NB_UID:users /home/$NB_USER/
+COPY notebook /home/$NB_USER/notebook
+COPY simuGate /home/$NB_USER/simuGate
 RUN cp /root/.profile /home/$NB_USER/.profile
-RUN chown --recursive $NB_UID:users /home/$NB_USER/.profile
+RUN chown --recursive $NB_UID:users /home/$NB_USER/
 
 USER $NB_UID
 
