@@ -1,8 +1,9 @@
 FROM tbaudier/cours_jm:v1.6
 
-# install the notebook package
+# install the notebook package and requirements.txt
 RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook
+    pip install --no-cache notebook && \
+    pip install -r notebook/requirements.txt
 
 # create user with a home directory
 ARG NB_USER
@@ -18,7 +19,6 @@ WORKDIR ${HOME}
 
 USER root
 
-RUN mkdir /home/$NB_USER/jupyter_notebook
 COPY notebook /home/$NB_USER/notebook
 COPY simuGate /home/$NB_USER/simuGate
 RUN cp /root/.profile /home/$NB_USER/.profile
