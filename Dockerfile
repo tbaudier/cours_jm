@@ -2,8 +2,7 @@ FROM tbaudier/cours_jm:v1.6
 
 # install the notebook package and requirements.txt
 RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook && \
-    pip install -r notebook/requirements.txt
+    pip install --no-cache notebook
 
 # create user with a home directory
 ARG NB_USER
@@ -25,6 +24,8 @@ RUN cp /root/.profile /home/$NB_USER/.profile
 RUN chown --recursive $NB_UID:users /home/$NB_USER/
 
 USER $NB_UID
+
+RUN pip install -r /home/$NB_USER/notebook/requirements.txt
 
 ENV JUPYTER_ENABLE_LAB=yes
 
