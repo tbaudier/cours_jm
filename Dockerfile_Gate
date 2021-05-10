@@ -9,14 +9,24 @@
 FROM python:3.7-slim
 SHELL ["/bin/bash", "-c"]
 RUN apt-get update -qq \
- &&   apt-get install -y gcc \
-                                  g++ \
-                                  make \
-                                  binutils \
-                                  git \
-                                  cmake \
-                                  wget \
-                                  ccache
+ && apt-get install -y gcc \
+                       g++ \
+                       make \
+                       binutils \
+                       git \
+                       cmake \
+                       wget \
+                       bzip2 \
+                       ca-certificates \
+                       libglib2.0-0 \
+                       libsm6 \
+                       libxext6 \
+                       libxrender1 \
+                       mercurial \
+                       subversion \
+                       ccache \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 #create folder and install cmake
 RUN mkdir software \
@@ -122,4 +132,21 @@ RUN mkdir software/gate \
 #Change to bash
 RUN rm /bin/sh \
  && ln -s /bin/bash /bin/sh
+
+# Leave these args here to better use the Docker build cache
+ARG CONDA_VERSION=py38_4.9.2
+ARG CONDA_MD5=122c8c9beb51e124ab32a0fa6426c656
+
+# Run miniconda install
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh -O miniconda.sh \
+ && echo "${CONDA_MD5}  miniconda.sh" > miniconda.md5 \
+ && if ! md5sum --status -c miniconda.md5; then exit 1; fi \
+ && mkdir -p /opt \
+ && sh miniconda.sh -b -p /software/miniconda \
+ && rm miniconda.sh miniconda.md5 \
+ && find /software/miniconda/ -follow -type f -name '*.a' -delete \
+ && find /software/miniconda/ -follow -type f -name '*.js.map' -delete \
+ && /software/miniconda/bin/conda clean -afy \
+ && echo "export PATH=/software/miniconda/bin:$PATH" >> /root/.profile
+
  
