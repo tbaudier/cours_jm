@@ -27,7 +27,8 @@ USER $NB_UID
 
 CMD [ "/bin/bash" ]
 RUN cat /home/$NB_USER/.profile
-
+RUN ls -a ${HOME}
+RUN echo ${HOME}
 # Adapted from https://pythonspeed.com/articles/activate-conda-dockerfile/
 RUN conda env create -f ${HOME}/environment.yml
 SHELL ["conda", "run", "-n", "example-environment", "/bin/bash", "-c"]
