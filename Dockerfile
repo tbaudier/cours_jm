@@ -26,9 +26,9 @@ RUN chown --recursive $NB_UID:users /home/$NB_USER/
 USER $NB_UID
 
 CMD [ "/bin/bash" ]
+RUN source /home/$NB_USER/.profile
 RUN cat /home/$NB_USER/.profile
-RUN ls /software/miniconda/bin
-RUN ls /software
+
 # Adapted from https://pythonspeed.com/articles/activate-conda-dockerfile/
 RUN conda env create -f ${HOME}/environment.yml
 SHELL ["conda", "run", "-n", "example-environment", "/bin/bash", "-c"]
